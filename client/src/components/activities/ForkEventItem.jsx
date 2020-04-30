@@ -2,8 +2,16 @@
 import React from "react";
 import RepoInfo from "./RepoInfo";
 
-function ForkEventItem({ item }) {
-  const { type, username, avatarUrl, fromRepo, toRepo, createdAt } = item;
+function ForkEventItem({ item, accessToken }) {
+  const {
+    type,
+    username,
+    avatarUrl,
+    fromRepo,
+    toRepo,
+    fromRepoUrl,
+    createdAt,
+  } = item;
 
   return (
     <div className='event item-fork'>
@@ -27,7 +35,11 @@ function ForkEventItem({ item }) {
           </a>
           <span className='event__timestamp'>{createdAt}</span>
         </div>
-        <RepoInfo repoName={fromRepo} />
+        <RepoInfo
+          repoName={fromRepo}
+          repoUrl={fromRepoUrl}
+          accessToken={accessToken}
+        />
       </div>
     </div>
   );

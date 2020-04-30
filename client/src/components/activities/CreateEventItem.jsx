@@ -2,8 +2,8 @@
 import React from "react";
 import RepoInfo from "./RepoInfo";
 
-function CreateEventItem({ item }) {
-  const { type, username, avatarUrl, repoName, createdAt } = item;
+function CreateEventItem({ item, accessToken }) {
+  const { type, username, avatarUrl, repoName, createdAt, repoUrl } = item;
 
   return (
     <div className='event item-create'>
@@ -23,7 +23,11 @@ function CreateEventItem({ item }) {
           </a>
           <span className='event__timestamp'>{createdAt}</span>
         </div>
-        <RepoInfo repoName={repoName} />
+        <RepoInfo
+          repoName={repoName}
+          repoUrl={repoUrl}
+          accessToken={accessToken}
+        />
       </div>
     </div>
   );

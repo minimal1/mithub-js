@@ -12,12 +12,13 @@ export default class UserStore {
     loading: false,
     currentPage: 0,
     lastPage: -1,
+    accessToken: null,
   };
 
   constructor(root) {
     this.root = root;
     this.currentIdx = 0;
-    this.accessToken = null;
+    this.userInfo.accessToken = null;
   }
 
   @action login = async (data) => {
@@ -29,9 +30,10 @@ export default class UserStore {
       avatarUrl: data.avatar_url,
       currentPage: 0,
       lastPage: -1,
+      accessToken: data.access_token,
     };
     this.currentIdx = 0;
-    this.accessToken = data.access_token;
+
     await this.loadNextPage();
   };
 
@@ -44,9 +46,9 @@ export default class UserStore {
       loading: false,
       currentPage: 0,
       lastPage: -1,
+      accessToken: null,
     };
     this.currentIdx = 0;
-    this.accessToken = null;
   };
 
   @action loadNextPage = async () => {
@@ -83,12 +85,14 @@ export default class UserStore {
       //repository 처리
       this.userInfo.loadedActivities.push({
         ...eventDict,
+        repoUrl: repo.url,
       });
     } else if (type === "ForkEvent") {
       this.userInfo.loadedActivities.push({
         ...eventDict,
         fromRepo: repo.name,
         toRepo: payload.forkee.full_name,
+        fromRepoUrl: repo.url,
       });
     } else if (
       (type === "IssuesEvent" || type === "PullRequestEvent") &&
@@ -138,11 +142,14 @@ export default class UserStore {
         .reverse()
         .forEach((event) => this.userInfo.loadedActivities.push(event));
     } else if (type === "PushEvent" && payload.head !== payload.before) {
-      const commits = payload.commits.map((commit) => ({
-        userName: commit.author.name,
-        message: commit.message,
-        sha: commit.sha,
-      }));
+      const commits = payload.commits.map((commit) => {
+        return {
+          userName: commit.author.name,
+          userEmail: commit.author.email,
+          message: commit.message,
+          sha: commit.sha,
+        };
+      });
 
       this.userInfo.loadedActivities.push({
         ...eventDict,
@@ -162,12 +169,12 @@ export default class UserStore {
       this.userInfo.lastPage < 0 ||
       this.userInfo.currentPage < this.userInfo.lastPage
     ) {
-      if (this.accessToken)
+      if (this.userInfo.accessToken)
         res = await axios.get(
           `https://api.github.com/users/${this.userInfo.userName}/received_events`,
           {
             headers: {
-              Authorization: `token ${this.accessToken}`,
+              Authorization: `token ${this.userInfo.accessToken}`,
             },
             params: {
               page: this.userInfo.currentPage + 1,

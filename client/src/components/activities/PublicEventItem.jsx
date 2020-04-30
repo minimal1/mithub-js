@@ -2,8 +2,8 @@
 import React from "react";
 import RepoInfo from "./RepoInfo";
 
-function PublicEventItem({ item }) {
-  const { type, username, avatarUrl, repoName, createdAt } = item;
+function PublicEventItem({ item, accessToken }) {
+  const { type, username, avatarUrl, repoName, createdAt, repoUrl } = item;
 
   return (
     <div className='event item-public'>
@@ -23,7 +23,11 @@ function PublicEventItem({ item }) {
           </a>{" "}
           public <span className='event__timestamp'>{createdAt}</span>
         </div>
-        <RepoInfo repoName={repoName} />
+        <RepoInfo
+          repoName={repoName}
+          repoUrl={repoUrl}
+          accessToken={accessToken}
+        />
       </div>
     </div>
   );

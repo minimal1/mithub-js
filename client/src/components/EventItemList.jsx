@@ -13,8 +13,8 @@ import "./Event.css";
 
 let itemList = [];
 
-function EventItemList({ userName, loading, loadedActivities }) {
-  if (userName === "") {
+function EventItemList({ accessToken, loading, loadedActivities }) {
+  if (accessToken === null) {
     itemList = [];
   }
   if (!loading) {
@@ -22,13 +22,37 @@ function EventItemList({ userName, loading, loadedActivities }) {
       const { type } = item;
       switch (type) {
         case "CreateEvent":
-          return <CreateEventItem item={item} key={item.id} />;
+          return (
+            <CreateEventItem
+              item={item}
+              key={item.id}
+              accessToken={accessToken}
+            />
+          );
         case "ForkEvent":
-          return <ForkEventItem item={item} key={item.id} />;
+          return (
+            <ForkEventItem
+              item={item}
+              key={item.id}
+              accessToken={accessToken}
+            />
+          );
         case "WatchEvent":
-          return <WatchEventItem item={item} key={item.id} />;
+          return (
+            <WatchEventItem
+              item={item}
+              key={item.id}
+              accessToken={accessToken}
+            />
+          );
         case "PublicEvent":
-          return <PublicEventItem item={item} key={item.id} />;
+          return (
+            <PublicEventItem
+              item={item}
+              key={item.id}
+              accessToken={accessToken}
+            />
+          );
         case "PushEvent":
           return <PushEventItem item={item} key={item.id} />;
         case "PullRequestEvent":
@@ -44,7 +68,7 @@ function EventItemList({ userName, loading, loadedActivities }) {
 }
 
 export default inject(({ user }) => ({
-  userName: user.userInfo.useraname,
+  accessToken: user.userInfo.accessToken,
   loading: user.userInfo.loading,
   loadedActivities: user.userInfo.loadedActivities,
 }))(observer(EventItemList));
