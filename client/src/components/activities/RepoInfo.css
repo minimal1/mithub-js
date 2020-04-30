@@ -1,0 +1,23 @@
+/** @format */
+
+.repo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.repo .repo__title {
+  font-size: 16px;
+  font-weight: 600;
+}
+.repo .repo__title:hover {
+  color: #0366d6;
+}
+.repo .repo__description {
+  margin-top: 7px;
+  /* margin-bottom: 10px; */
+}
+
+.repo .repo__description:last-child {
+  margin-bottom: 0px;
+}
