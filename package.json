@@ -2,7 +2,7 @@
   "name": "mithub-js",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "init.js",
   "scripts": {
     "dev:client": "cd client && npm run dev:start",
     "dev:server": "cd server && npm run dev:start",
@@ -11,7 +11,7 @@
     "build:server": "cd server && npm run build",
     "build": "npm run build:client && npm run build:server",
     "start": "cd server && npm start",
-    "prestart": "npm install && npm run build",
+    "prestart": "npm run build",
     "preinstall": "(cd client && npm install); (cd server && npm install);"
   },
   "repository": {
