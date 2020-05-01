@@ -4,7 +4,7 @@ import "@babel/polyfill";
 import dotenv from "dotenv";
 import app from "./app";
 dotenv.config();
-const PORT = process.env.PORT | 4000;
+const PORT = process.env.PORT || 400;
 
 const handleListening = () => {
   console.log(`Listening on: ${PORT}`);
