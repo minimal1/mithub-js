@@ -1,6 +1,7 @@
 /** @format */
 import React from "react";
 import RepoInfo from "./RepoInfo";
+import { calcTimestamp } from "../../utils/uilts";
 
 function WatchEventItem({ item, accessToken }) {
   const { username, avatarUrl, repoName, createdAt, repoUrl } = item;
@@ -21,7 +22,7 @@ function WatchEventItem({ item, accessToken }) {
           <a href={`https://github.com/${repoName}`}>
             <span className='event__repo'>{repoName}</span>
           </a>
-          <span className='event__timestamp'>{createdAt}</span>
+          <span className='event__timestamp'>{calcTimestamp(createdAt)}</span>
         </div>
         <RepoInfo
           repoName={repoName}

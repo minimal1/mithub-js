@@ -2,6 +2,7 @@
 
 import React from "react";
 import "./Commit.css";
+import Axios from "../../../../server/node_modules/axios";
 
 function Commit({ commit, repoName }) {
   console.log(commit);

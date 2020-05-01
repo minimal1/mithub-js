@@ -2,6 +2,7 @@
 import React from "react";
 import Commit from "./Commit";
 import "./PushEventItem.css";
+import { calcTimestamp } from "../../utils/uilts";
 
 function PushEventItem({ item }) {
   const {
@@ -34,6 +35,9 @@ function PushEventItem({ item }) {
         {size - 2} more {size - 2 > 1 ? "commits" : "commit"} >>
       </a>
     );
+  } else if (size === 2) {
+    commitList.push(<Commit key={1} commit={commits[0]} repoName={repoName} />);
+    commitList.push(<Commit key={2} commit={commits[1]} repoName={repoName} />);
   } else {
     commitList.push(<Commit key={1} commit={commits[0]} repoName={repoName} />);
   }
@@ -54,7 +58,7 @@ function PushEventItem({ item }) {
           <a href={`https://github.com/${repoName}`}>
             <span className='event__repo'>{repoName}</span>
           </a>
-          <span className='event__timestamp'>{createdAt}</span>
+          <span className='event__timestamp'>{calcTimestamp(createdAt)}</span>
         </div>
         <div className='event__detail'>
           <div className='event__push push'>

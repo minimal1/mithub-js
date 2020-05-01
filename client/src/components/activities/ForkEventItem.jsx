@@ -1,6 +1,7 @@
 /** @format */
 import React from "react";
 import RepoInfo from "./RepoInfo";
+import { calcTimestamp } from "../../utils/uilts";
 
 function ForkEventItem({ item, accessToken }) {
   const {
@@ -33,7 +34,7 @@ function ForkEventItem({ item, accessToken }) {
           <a href={`https://github.com/${fromRepo}`}>
             <span className='event__repo'>{fromRepo}</span>
           </a>
-          <span className='event__timestamp'>{createdAt}</span>
+          <span className='event__timestamp'>{calcTimestamp(createdAt)}</span>
         </div>
         <RepoInfo
           repoName={fromRepo}

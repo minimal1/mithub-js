@@ -18,6 +18,10 @@ app.use(morgan("dev"));
 
 if (process.env.PRODUCTION) {
   app.use(express.static(path.join(__dirname, "../../client/build/")));
+  app.use(
+    "/auth/github/callback",
+    express.static(path.join(__dirname, "../../client/build/"))
+  );
 }
 
 app.use(routes.api, apiRouter);

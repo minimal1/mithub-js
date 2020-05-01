@@ -1,6 +1,7 @@
 /** @format */
 import React from "react";
 import "./LabeledEventItem.css";
+import { calcTimestamp } from "../../utils/uilts";
 
 function IssueEventItem({ item }) {
   const { username, avatarUrl, repoName, createdAt, issue } = item;
@@ -28,7 +29,7 @@ function IssueEventItem({ item }) {
           <a href={`https://github.com/${repoName}`}>
             <span className='event__repo'>{repoName}</span>
           </a>
-          <span className='event__timestamp'>{createdAt}</span>
+          <span className='event__timestamp'>{calcTimestamp(createdAt)}</span>
         </div>
         <div className='event__detail labeled'>
           <span className='labeled__icon'>

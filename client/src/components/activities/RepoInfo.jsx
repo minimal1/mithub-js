@@ -2,27 +2,62 @@
 import React, { useState } from "react";
 import "./RepoInfo.css";
 import Axios from "axios";
+import { getTimestamp } from "../../utils/uilts";
 
 function RepoInfo({ repoName, repoUrl, accessToken }) {
   const [language, setLanguage] = useState("");
   const [stars, setStars] = useState("");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
+  const [starred, setStarred] = useState(false);
 
   Axios.get(repoUrl, {
-    header: { Authorization: `token ${accessToken}` },
+    headers: { Authorization: `token ${accessToken}` },
   }).then((res) => {
     console.log(res);
     setLanguage(res.data.language);
     setStars(res.data.stargazers_count);
-    if (res.data.updated_at) {
-      setDate(res.data.updated_at);
-    } else {
-      setDate(res.data.created_at);
-    }
     setDescription(res.data.description);
+
+    const timestamp = new Date(res.data.updated_at);
+    setDate(getTimestamp(timestamp));
   });
 
+  const checkStar = () =>
+    Axios.get(`https://api.github.com/user/starred/${repoName}`, {
+      headers: { Authorization: `token ${accessToken}` },
+    })
+      .then((res) => {
+        if (res.status === 204) setStarred(true);
+        else setStarred(false);
+      })
+      .catch((error) => console.log(error));
+
+  const starRepo = () => {
+    starred
+      ? Axios.delete(`https://api.github.com/user/starred/${repoName}`, {
+          headers: {
+            Authorization: `token ${accessToken}`,
+            "Content-Length": "0",
+          },
+        })
+          .then((res) => {
+            checkStar();
+          })
+          .catch((error) => console.log(error))
+      : Axios.put(`https://api.github.com/user/starred/${repoName}`, null, {
+          headers: {
+            Authorization: `token ${accessToken}`,
+            "Content-Length": "0",
+          },
+        })
+          .then((res) => {
+            checkStar();
+          })
+          .catch((error) => console.log(error));
+  };
+
+  checkStar();
   return (
     <div className='event__detail repo'>
       <div className='repo__detail'>
@@ -32,14 +67,31 @@ function RepoInfo({ repoName, repoUrl, accessToken }) {
         <div className='repo__description'>
           <p>{description}</p>
         </div>
-        <div className='repo__more-info'>
-          <span className='repo__language'>{language}</span>
-          <span className='repo__stars'>{stars}</span>
-          <span className='repo__date'>{date}</span>
-        </div>
+        <ul className='repo__more-info'>
+          {language !== "" ? (
+            <li className='repo__language info'>{language}</li>
+          ) : (
+            <></>
+          )}
+          {stars > 0 ? (
+            <li className='repo__stars info'>
+              <a href={`https://github.com/${repoName}/stargazers`}>
+                <i className='fas fa-star'></i>
+                {stars}
+              </a>
+            </li>
+          ) : (
+            <></>
+          )}
+          {date !== "" ? (
+            <li className='repo__date info'>Updated {date}</li>
+          ) : (
+            <></>
+          )}
+        </ul>
       </div>
-      <button className='event__button'>
-        <i className='fas fa-star'></i> Star
+      <button className='event__button' onClick={starRepo}>
+        <i className='fas fa-star'></i> {starred ? "Unstar" : "Star"}
       </button>
     </div>
   );

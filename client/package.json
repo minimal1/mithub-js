@@ -73,6 +73,7 @@
   "scripts": {
     "dev:start": "node scripts/start.js",
     "build": "node scripts/build.js",
+    "prebuild": "rm -rf build",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {

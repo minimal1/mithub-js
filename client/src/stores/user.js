@@ -2,6 +2,7 @@
 
 import { observable, action } from "mobx";
 import axios from "axios";
+import removeMd from "remove-markdown";
 
 export default class UserStore {
   @observable userInfo = {
@@ -116,7 +117,7 @@ export default class UserStore {
                 label: label.name,
                 color: label.color,
                 title: payload.issue.title,
-                body: payload.issue.body,
+                body: removeMd(payload.issue.body).split("\n")[0],
               },
             });
           } else {
@@ -129,7 +130,7 @@ export default class UserStore {
                 label: label.name,
                 color: label.color,
                 title: payload.pull_request.title,
-                body: payload.pull_request.body,
+                body: removeMd(payload.pull_request.body).split("\n")[0],
                 additions: payload.pull_request.additions,
                 deletions: payload.pull_request.deletions,
               },
@@ -143,10 +144,12 @@ export default class UserStore {
         .forEach((event) => this.userInfo.loadedActivities.push(event));
     } else if (type === "PushEvent" && payload.head !== payload.before) {
       const commits = payload.commits.map((commit) => {
+        const message = removeMd(commit.message).split("\n")[0];
+
         return {
           userName: commit.author.name,
           userEmail: commit.author.email,
-          message: commit.message,
+          message,
           sha: commit.sha,
         };
       });

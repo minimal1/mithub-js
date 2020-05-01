@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:start": "nodemon --exec babel-node src/init.js"
+    "build": "babel src --out-dir build",
+    "prebuild": "rm -rf build",
+    "dev:start": "nodemon --exec babel-node src/init.js",
+    "start": "PRODUCTION=true node build/init.js"
   },
   "author": "",
   "license": "ISC",

@@ -14,10 +14,26 @@
   color: #0366d6;
 }
 .repo .repo__description {
-  margin-top: 7px;
+  margin-top: 10px;
+  color: #586069 !important;
   /* margin-bottom: 10px; */
 }
 
-.repo .repo__description:last-child {
-  margin-bottom: 0px;
+.repo .repo__more-info {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.repo__stars i {
+  margin-right: 5px;
+}
+
+.info {
+  color: #586069;
+  font-size: 12px;
+}
+
+.info + .info {
+  margin-left: 10px;
 }
