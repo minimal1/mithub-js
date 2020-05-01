@@ -11,7 +11,7 @@
     "build:server": "cd server && npm run build",
     "build": "npm run build:client && npm run build:server",
     "start": "cd server && npm start",
-    "prestart": "npm run build",
+    "prestart": "npm install && npm run build",
     "preinstall": "(cd client && npm install); (cd server && npm install);"
   },
   "repository": {
